@@ -1,0 +1,4 @@
+[0107/153128.890:ERROR:directory_reader_win.cc(43)] FindFirstFile: Det går inte att hitta sökvägen. (0x3)
+[0108/131612.519:ERROR:crashpad_client_win.cc(520)] CreateProcess: Åtkomst nekad. (0x5)
+[0113/142931.622:ERROR:directory_reader_win.cc(43)] FindFirstFile: Det går inte att hitta sökvägen. (0x3)
+[0126/141037.621:ERROR:directory_reader_win.cc(43)] FindFirstFile: Det går inte att hitta sökvägen. (0x3)
