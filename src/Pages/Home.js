@@ -1,47 +1,67 @@
-//React
-import React from 'react';
-
-//Local styling
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
-//Animations
-import { motion, AnimatePresence } from 'framer-motion';
+const variants = {
+  initial: {
+    opacity: 0,
+    y: 50,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 const Home = () => {
   return (
-    <StyledWelcomePage
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      exit={{ opacity: 0 }}
-    >
-      <h1>Are you a gamer looking for awesome games?</h1>
-      <h1>
-        Welcome to <span>Pop</span>
-        <span>Games</span>
-      </h1>
-    </StyledWelcomePage>
+    <Container>
+      <motion.div
+        variants={variants}
+        initial='initial'
+        animate='animate'
+        exit='exit'>
+        <h1>Are you a gamer looking for new awesome games?</h1>
+        <h1>
+          Welcome to <span>PopGames</span>
+        </h1>
+      </motion.div>
+    </Container>
   );
 };
 
-const StyledWelcomePage = styled(motion.div)`
-  min-height: 92vh;
+const Container = styled(motion.div)`
+  height: 88vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  h1 {
-    font-size: 4rem;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
-    font-weight: lighter;
-    span {
-      font-family: 'Lobster', sans-serif;
-      font-size: 5rem;
 
-      :nth-child(2) {
-        color: #ff7300;
+  h1 {
+    font-size: 1.8rem;
+    font-weight: lighter;
+    text-align: center;
+
+    span {
+      color: #ff7300;
+      font-size: 2rem;
+      font-family: 'Lobster';
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.4rem;
+
+      span {
+        font-size: 1.4rem;
       }
     }
   }

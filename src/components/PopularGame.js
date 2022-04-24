@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -31,13 +31,13 @@ const PopularGame = ({ game }) => {
       <StyledGame onMouseEnter={increaseImgSize} onMouseLeave={decreaseImgSize}>
         <StyledLink to={`/games/${game.id}`}>More info</StyledLink>
         <StyledImage ref={imgRef} src={game.background_image} alt={game.name} />
-        <StyledDescription>
+        <Description>
           <h3>{game.name}</h3>
-          <StyledSubDescription>
+          <Info>
             <p>Released: {game.released}</p>
             <div>{getRating(game.rating)}</div>
-          </StyledSubDescription>
-        </StyledDescription>
+          </Info>
+        </Description>
       </StyledGame>
     </>
   );
@@ -46,7 +46,6 @@ const PopularGame = ({ game }) => {
 const StyledGame = styled(motion.div)`
   min-height: 30vh;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  text-align: center;
   overflow: hidden;
   position: relative;
 `;
@@ -54,8 +53,8 @@ const StyledGame = styled(motion.div)`
 const StyledLink = styled(Link)`
   position: absolute;
   background-color: none;
-  padding: 1rem 2rem;
-  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   right: 0;
   bottom: 0;
@@ -80,7 +79,7 @@ const StyledImage = styled(motion.img)`
   transition: 0.5s ease-in-out;
 `;
 
-const StyledDescription = styled(motion.div)`
+const Description = styled(motion.div)`
   position: absolute;
   background: rgba(0, 0, 0, 0.9);
   left: 0%;
@@ -90,26 +89,26 @@ const StyledDescription = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  padding-left: 0.5rem;
 
   h3 {
     background: none;
     color: #eee;
-    font-size: 1.6rem;
-    font-weight: lighter;
+    font-size: 0.8rem;
+    font-weight: bolder;
   }
 `;
 
-const StyledSubDescription = styled(motion.div)`
+const Info = styled(motion.div)`
   background: none;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0rem 1rem;
 
   p {
     background: none;
     color: #eee;
-    font-size: 1.2rem;
+    font-size: 0.7rem;
     font-weight: lighter;
   }
 
@@ -121,7 +120,7 @@ const StyledSubDescription = styled(motion.div)`
     i {
       background: none;
       color: #eee;
-      font-size: 1.2rem;
+      font-size: 0.7rem;
     }
   }
 `;

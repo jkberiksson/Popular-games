@@ -1,19 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-const GameDetail = ({}) => {
+const variants = {
+  initial: {
+    opacity: 0,
+    y: 50,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
+const GameDetail = () => {
   const [game, setGame] = useState({});
-  const [gameImages, setGameImages] = useState([]);
-  const [gameVideo, setGameVideo] = useState({});
   const { pathname } = useLocation();
   const pathId = pathname.split('/')[2];
+  const [data, setData] = useState(false);
 
   useEffect(() => {
     getSpecificGame(pathId);
-    getImages(pathId);
   }, [pathId]);
 
   const getSpecificGame = async (id) => {
@@ -21,77 +39,81 @@ const GameDetail = ({}) => {
       `https://api.rawg.io/api/games/${id}?key=288fdc3a683246a3b898a149a0ecfcab`
     );
     setGame(specificGameData.data);
-    setGameVideo(specificGameData.data.clip);
+    setData(true);
   };
 
-  const getImages = async (id) => {
-    const images = await axios.get(
-      `https://api.rawg.io/api/games/${id}/screenshots?key=288fdc3a683246a3b898a149a0ecfcab`
-    );
-    setGameImages(images.data.results);
-  };
-
-  return (
-    <StyledGameDetail
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <StyledLink to='/games'>&larr; All Games</StyledLink>
+  return data ? (
+    <Container
+      variants={variants}
+      initial='initial'
+      animate='animate'
+      exit='exit'>
+      <BackBtn to='/games'>&larr; Go Back</BackBtn>
       <h1>{game.name}</h1>
-      <StyledDescription>{game.description_raw}</StyledDescription>
-      {gameVideo === null ? (
-        <StyledNoVideo>No video available</StyledNoVideo>
-      ) : (
-        <video src={gameVideo.clip} controls></video>
-      )}
-      {gameImages.map((image) => (
-        <img src={image.image} alt='gameImg' key={image.id} />
-      ))}
-    </StyledGameDetail>
+      <img src={game.background_image} alt='' />
+      <Description dangerouslySetInnerHTML={{ __html: game.description }} />
+    </Container>
+  ) : (
+    <Loading>Loading...</Loading>
   );
 };
 
-const StyledGameDetail = styled(motion.div)`
-  margin-top: 2rem;
-  text-align: center;
+const Container = styled(motion.div)`
+  margin: 3rem 0;
 
   h1 {
-    font-size: 3rem;
-    margin: 2rem 0;
+    font-size: 1.8rem;
+    font-weight: lighter;
+    text-align: center;
+    margin-bottom: 3rem;
   }
 
-  video {
-    width: 80%;
-  }
   img {
-    width: 80%;
-    object-fit: cover;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 1.6rem;
+    }
   }
 `;
 
-const StyledDescription = styled.p`
-  font-size: 1.4rem;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-  width: 80%;
+const Description = styled(motion.div)`
+  margin: 1rem 0;
+  font-size: 0.8rem;
 
-  @media screen and (max-width: 500px) {
-    font-size: 1.2rem;
+  p {
+    font-size: 0.8rem;
+    margin: 1rem 0;
+  }
+
+  li {
+    font-size: 0.8rem;
+    font-style: italic;
   }
 `;
 
-const StyledNoVideo = styled.div`
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  font-weight: bold;
+const Loading = styled(motion.h1)`
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  font-size: 1.6rem;
-  font-weight: bold;
+const BackBtn = styled(Link)`
+  background-color: #eee;
+  color: #121212;
+  display: inline-block;
   padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 export default GameDetail;
